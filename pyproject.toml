@@ -1,0 +1,62 @@
+[project]
+name = "forex-tutor"
+version = "0.0.1"
+description = "Sistema di auto-apprendimento per trading forex basato su imitazione + deep learning (EURUSD, 1s)"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+
+dependencies = [
+    # --- deep learning (GPU RTX 5090 = sm_120 -> wheel cu128, vedi [tool.uv.sources]) ---
+    "torch>=2.7.0",
+    # --- dati ---
+    "polars>=1.0",
+    "duckdb>=1.1",
+    "pyarrow>=17.0",
+    "numpy>=1.26,<2.3",
+    # --- indicatori tecnici ---
+    "TA-Lib>=0.5.1",
+    "talipp>=2.4",
+    # --- RL / env ---
+    "gymnasium>=1.0",
+    "scipy>=1.13",
+    # --- config ---
+    "pydantic>=2.7",
+    "pyyaml>=6.0",
+    # --- UI desktop ---
+    "PyQt6>=6.7",
+    "pyqtgraph>=0.13",
+    # --- broker (solo Windows) ---
+    "MetaTrader5>=5.0.45 ; sys_platform == 'win32'",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.scripts]
+ft-probe-fxpro   = "forex_tutor.scripts.probe_fxpro_depth:main"
+ft-download-duka = "forex_tutor.scripts.download_dukascopy:main"
+ft-build-bars    = "forex_tutor.scripts.build_bars:main"
+ft-build-feats   = "forex_tutor.scripts.build_features:main"
+ft-sim-sanity    = "forex_tutor.scripts.run_sim_sanity:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/forex_tutor"]
+
+# --- PyTorch wheel cu128 per RTX 5090 (sm_120): NON usare la wheel di default PyPI ---
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

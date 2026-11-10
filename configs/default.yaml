@@ -1,0 +1,15 @@
+# Config di default ForexTutor. Override con file YAML aggiuntivi passati a load_config().
+seed: 42
+
+data:
+  symbol: EURUSD
+  primary_source: dukascopy   # base storica lunga (con volumi di liquidita')
+  broker_source: fxpro        # coerenza col broker di esecuzione
+
+fxpro:
+  # Le credenziali NON servono qui se il terminale MT5 FxPro e' gia' aperto e loggato.
+  # Compilare solo per forzare una connessione esplicita.
+  login: null
+  password: null
+  server: null
+  terminal_path: null

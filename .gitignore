@@ -1,0 +1,23 @@
+# dati e run (grandi, locali)
+/data/
+/runs/
+*.npy
+*.parquet
+*.bi5
+
+# python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# uv
+uv.lock
+
+# os / editor
+Thumbs.db
+.DS_Store
+.idea/
+.vscode/
